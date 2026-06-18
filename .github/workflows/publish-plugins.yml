@@ -1,8 +1,6 @@
 name: Publish Plugins
 
 on:
-  permissions:
-    contents: write
   push:
     branches:
       - master
@@ -11,7 +9,10 @@ on:
       - 'public/**'
       - 'scripts/publish-plugins.sh'
       - '.github/workflows/publish-plugins.yml'
-
+      
+permissions:
+  contents: write
+  
 concurrency:
   group: ${{ github.workflow }}
   cancel-in-progress: true
