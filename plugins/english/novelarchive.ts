@@ -249,7 +249,13 @@ class NovelArchivePlugin implements Plugin.PluginBase {
     filters: Plugin.PopularNovelsOptions<typeof this.filters>['filters'],
   ): string {
     if (showLatestNovels) {
-      return '/api/novels/recently-updated?limit=20';
+      const params = new URLSearchParams({
+        page: String(Math.max(1, pageNo)),
+        per_page: '20',
+        sort: 'recent',
+      });
+
+      return `/api/novels?${params.toString()}`;
     }
 
     if (!this.hasActiveBrowseFilters(filters)) {
