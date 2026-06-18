@@ -271,7 +271,7 @@ class NovelArchivePlugin implements Plugin.PluginBase {
     const includedGenres = this.toStringList(filters?.genre.value.include);
     const excludedGenres = this.toStringList(filters?.genre.value.exclude);
 
-    if (sort && sort !== 'recent') {
+    if (sort) {
       params.set('sort', sort);
     }
 
@@ -303,7 +303,7 @@ class NovelArchivePlugin implements Plugin.PluginBase {
     const excludedGenres = this.toStringList(filters.genre.value.exclude);
 
     return (
-      (sort !== '' && sort !== 'recent') ||
+      sort !== '' ||
       (status !== '' && status !== 'all') ||
       includedGenres.length > 0 ||
       excludedGenres.length > 0
