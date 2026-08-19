@@ -97,7 +97,7 @@ class NovelArchivePlugin implements Plugin.PluginBase {
   name = 'NovelArchive';
   icon = 'src/en/novelarchive/icon.png';
   site = 'https://novelarchive.cc';
-  version = '1.0.0';
+  version = '1.0.1';
   filters = {
     sort: {
       type: FilterTypes.Picker,
@@ -139,7 +139,10 @@ class NovelArchivePlugin implements Plugin.PluginBase {
 
   async popularNovels(
     pageNo: number,
-    { showLatestNovels, filters }: Plugin.PopularNovelsOptions<typeof this.filters>,
+    {
+      showLatestNovels,
+      filters,
+    }: Plugin.PopularNovelsOptions<typeof this.filters>,
   ): Promise<Plugin.NovelItem[]> {
     const endpoint = this.getPopularEndpoint(pageNo, showLatestNovels, filters);
     const response = await this.apiGet<NovelsResponse>(endpoint);
@@ -415,7 +418,10 @@ class NovelArchivePlugin implements Plugin.PluginBase {
   }
 
   private toPositiveInteger(value: unknown): number {
-    const parsed = Number.parseInt(String(value ?? '').replace(/[^\d]/g, ''), 10);
+    const parsed = Number.parseInt(
+      String(value ?? '').replace(/[^\d]/g, ''),
+      10,
+    );
 
     return Number.isFinite(parsed) && parsed > 0 ? parsed : 0;
   }
@@ -428,8 +434,8 @@ class NovelArchivePlugin implements Plugin.PluginBase {
 
   private toChapterHtml(text: string): string {
     return String(text || '')
-      .split(/\n{2,}/)
-      .map(paragraph => paragraph.replace(/\s*\n\s*/g, ' ').trim())
+      .split(/\r?\n/)
+      .map(paragraph => paragraph.trim())
       .filter(Boolean)
       .map(paragraph => `<p>${this.escapeHtml(paragraph)}</p>`)
       .join('');
